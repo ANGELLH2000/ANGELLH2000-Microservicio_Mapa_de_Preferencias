@@ -65,6 +65,23 @@ class MongoDB_Manager {
                 return [false]
             }
         }
+        /**
+         * Actualiza el documento existente.
+         * @param {string} id - El ID del documento a actualizar.
+         * @param {Object} object_nivel - Los nuevos valores para el nivel especificado.
+         * @returns {Array} - Retorna [false,id,documento,error] en caso de error, o [true, id, documento] si la actualización es exitosa.
+         */
+        this.actualizar_documento_enBD= async function (id,object) {
+            try {
+                
+                const res = await nivelModel.findByIdAndUpdate(id, object, { new: true })
+                const {_id,__v,...Objeto_documento}=res.toObject()
+                return [true,id,Objeto_documento]
+            } catch (error) {
+                console.log("Hubo un error en la actuilzación del documento en la base de datos\n", error.message)
+                return [false,id,object,error.message]
+            }
+        }
     }
     
 }

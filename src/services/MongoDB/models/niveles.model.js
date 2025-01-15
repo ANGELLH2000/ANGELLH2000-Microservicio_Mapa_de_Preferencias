@@ -43,7 +43,7 @@ const nivel1_Schema = new mongoose.Schema(atributos_nivel_total[0], { _id: false
 // Nivel 2
 const nivel2_Schema = new mongoose.Schema(atributos_nivel_total[1], { _id: false })
 // Nivel 3
-const nivel3_Schema = new mongoose.Schema(atributos_nivel_total[0], { _id: false })
+const nivel3_Schema = new mongoose.Schema(atributos_nivel_total[2], { _id: false })
 
 
 const baseSchema = new mongoose.Schema({

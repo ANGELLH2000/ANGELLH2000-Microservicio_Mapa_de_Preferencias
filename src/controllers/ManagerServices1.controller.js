@@ -15,25 +15,45 @@ export default async function ManagerServices1(id_recomendacion, base) {
         const Objecto_documento = new NivelesManager(base)
 
         //No existe
-        if(id_recomendacion==="xxx"){
+        if (id_recomendacion === "xxx") {
             //Crear documento en Base de Datos
-            const crear= await Mongo.crear_documento_enBD(Objecto_documento.ObjetoDocumento)
-            if(crear[0]===false){
+            const crear = await Mongo.crear_documento_enBD(Objecto_documento.ObjetoDocumento)
+
+            if (crear[0] === false) {
                 throw new TypeError("Hubo un error en la creacion del ObjetoDocumento en la base de datos")
-            }else{
-                console.log("Objeto creado")
-                ManagerServices1(crear[1],base)
+            } else {
+                console.log("ObjetoDocumento Creado")
+                ManagerServices1(crear[1], base)
             }
-        }else{
+        } else {
 
             //Realizamos búsqueda
             const busqueda = await Mongo.buscarBD(id_recomendacion)
 
             if (busqueda[0] === false && busqueda[2] !== "") throw new TypeError(`Hubo un error: ${busqueda[2]}`) //Validamos que no sea un error
-            console.log( busqueda)
+            if (busqueda[0] === false) throw new TypeError(`No Existe el Id`) //Validamos que no sea un error
             //Existe
+
+            if (!(JSON.stringify(busqueda[2]) === JSON.stringify(Objecto_documento.ObjetoDocumento))) { //Usamos JSON.stringify para pasar todo el objeto a plano y comparar el string
+                //Diferente al de BD
+                //Actualizar la BD
+                const update = await Mongo.actualizar_documento_enBD(id_recomendacion, Objecto_documento.ObjetoDocumento)
+                if(update[0]===false){
+                    throw new TypeError("Hubo un error en la actualiación del ObjetoDocumento en la base de datos")
+                }else{
+                    console.log("ObjetoDocumento Actulizado",update[1])
+                    ManagerServices1(update[1], base)
+                }
+            } else {
+                //Igual al de BD
+                console.log("se termino pero son igaules")
+                return "se termino pero son igaules"
+            }
+            //console.log('nivel1:',busqueda[2].nivel1)
+            //console.log('nivel1:',Objecto_documento.ObjetoDocumento.nivel1)
+            
         }
-        
+
     } catch (error) {
         console.log(error.message)
     }
@@ -44,7 +64,7 @@ const base_correcta = {
     autores: [],
     lecturas_previas: [],
     ambientacion: [],
-    cantidad_hojas: [2],
+    cantidad_hojas: [],
     contexto_emocional: []
 }
-await ManagerServices1("xxx", base_correcta)
+await ManagerServices1("6788126e7cb24bd0c5f46058", base_correcta)
