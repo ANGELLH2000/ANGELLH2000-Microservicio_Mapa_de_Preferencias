@@ -46,6 +46,14 @@ export default async function ManagerServices1(id_recomendacion, base) {
                 }
             } else {
                 //Igual al de BD
+                //Reconocer Status General
+                
+                if(Objecto_documento.ObjetoDocumento.status==='completed'){
+                    //Completed
+                    return {status:'completed',id_recomendacion,base}
+                }else{
+                    
+                }
                 console.log("se termino pero son igaules")
                 return "se termino pero son igaules"
             }
@@ -60,11 +68,11 @@ export default async function ManagerServices1(id_recomendacion, base) {
 }
 const base_correcta = {
     generos: ["xxxx"],
-    temas_principales: [],
-    autores: [],
-    lecturas_previas: [],
-    ambientacion: [],
-    cantidad_hojas: [],
-    contexto_emocional: []
+    temas_principales: [1],
+    autores: [1],
+    lecturas_previas: [1],
+    ambientacion: [1],
+    cantidad_hojas: [1],
+    contexto_emocional: [1]
 }
-await ManagerServices1("6788126e7cb24bd0c5f46058", base_correcta)
+console.log(await ManagerServices1("6788126e7cb24bd0c5f46058", base_correcta))
