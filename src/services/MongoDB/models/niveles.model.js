@@ -1,14 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 import { base_config } from "../../../config/variables.config.js";
 //Definimos el documento
-const serviceSchema = new mongoose.Schema({
-    service_status: {
-        type: String,
-        default: "not started",
-        lowercase: true,
-        required: true
-    }
-}, { _id: false })
+
+const id_recomendacionSchema = {
+    type: String,
+    index: true,
+    required: true
+
+}
 const statusSchema = {
     type: String,
     default: "incompleted",
@@ -16,7 +15,6 @@ const statusSchema = {
     required: true
 
 }
-///
 //Genereando los atributos a cada nivel según la config
 
 let atributos_nivel_total = []
@@ -27,7 +25,7 @@ Object.values(base_config).forEach(nivel => {
         status: statusSchema
     }
     nivel.forEach(propiedades => {
-        atributos[propiedades] = { type: serviceSchema }
+        atributos[propiedades] = statusSchema
     })
     atributos_nivel_total.push(atributos)
 })
@@ -36,6 +34,7 @@ Object.values(base_config).forEach(nivel => {
 
 ////// 
 //  PARA HACER CAMBIOS O AGREGAR NIVELES ES AQUI
+//  Agregando los niveles faltantes
 //////
 
 // Nivel 1
@@ -46,7 +45,8 @@ const nivel2_Schema = new mongoose.Schema(atributos_nivel_total[1], { _id: false
 const nivel3_Schema = new mongoose.Schema(atributos_nivel_total[2], { _id: false })
 
 
-const baseSchema = new mongoose.Schema({
+const nivelesSchema = new mongoose.Schema({
+    id_recomendacion: id_recomendacionSchema,
     status: statusSchema,
     nivel1: { type: nivel1_Schema },
     nivel2: { type: nivel2_Schema },
@@ -55,5 +55,5 @@ const baseSchema = new mongoose.Schema({
 
 //Definir el nombre de la collecion
 
-const baseColleccion = "collecion_niveles";
-export const nivelModel = mongoose.model(baseColleccion, baseSchema)
+const nivelesColleccion = "collecion_niveles";
+export const nivelModel = mongoose.model(nivelesColleccion, nivelesSchema)
