@@ -1,4 +1,4 @@
-import { connectMongoDB} from "../config/mongoDB_connection.config.js"
+import { disconnectMongoDB } from "../config/mongoDB_connection.config.js"
 import dataValidationService from "../services/dataValidationService.js"
 import MongoDB_Manager from "../services/MongoDB/MongoDBManager.js"
 import NivelesManager from "../services/NivelesManager.js"
@@ -9,8 +9,6 @@ export default async function ManagerServices1(id_recomendacion, base) {
         //Validación
         if (!dataValidationService(id_recomendacion, base)[0]) throw new TypeError(`Error en la validación: ${dataValidationService(id_recomendacion, base)[1]}`)
         
-        //Iniciamos conección a Mongo
-        connectMongoDB()
         //---Instanciamos a MongoManager()
         const Mongo = new MongoDB_Manager()
 
