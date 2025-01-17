@@ -1,6 +1,6 @@
 
 //// Recordatorio
-////  Si se va acambiar la base config , asegurate de cambiar el model de mongoose
+////  Si se va a cambiar la base config , asegúrate de cambiar el model de mongoose
 const base_config = {
     nivel1: ['generos', 'temas_principales'],
     nivel2: ['autores', 'lecturas_previas', 'ambientacion'],

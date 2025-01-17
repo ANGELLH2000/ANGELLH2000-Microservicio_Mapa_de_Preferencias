@@ -10,19 +10,19 @@ import { name_base_config} from "../config/variables.config.js"
 export default function dataValidationService(id_recomendacion, base) {
     try {
         //Validar id_recomendacion
-        if (typeof id_recomendacion !== 'string') throw new TypeError("El id debe ser un String")
+        if (typeof id_recomendacion !== 'string') throw new TypeError("El id debe ser un Strings")
         if (id_recomendacion !== 'xxx' && id_recomendacion.length !== 24) throw new TypeError ("Para crear un documento en la base de datos debe pasar un id xxx")
         
         //Validar base
         if(typeof base !=='object')throw new TypeError("La base debe ser un Object")
         if(Object.keys(base).toString()!== name_base_config.toString())throw new TypeError("No coinciden las propiedades de la base")
     
-        return true
+        return [true]
 
 
     } catch (error) {
-        console.log(error.message)
-        return (false)
+        //console.log(error.message)
+        return [false,error.message]
     }
 
 }

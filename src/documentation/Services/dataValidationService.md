@@ -15,8 +15,8 @@
 ## Retornos
 
 - `boolean`:
-  - Retorna `true` si la validación es exitosa.
-  - Retorna `false` si ocurre un error durante la validación.
+  - Retorna `[true]` si la validación es exitosa.
+  - Retorna `[false, error.message ]` si ocurre un error durante la validación.
 
 ## Proceso Interno
 

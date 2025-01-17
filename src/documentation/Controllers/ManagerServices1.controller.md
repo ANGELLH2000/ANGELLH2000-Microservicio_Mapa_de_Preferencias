@@ -12,11 +12,27 @@
 ## Retornos
 
 - **Si el proceso es exitoso:**
-  - Un objeto con el estado general, nivel, y propiedad evaluada.
-  - Ejemplo:
-    ```json
-    { "status": "completed", "id_recomendacion": "123456", "base": {...} }
-    ```
+    
+  - **SI ESTA COMPLETO :**
+      - Ejemplo:
+        ```json
+        { 
+          "status": "completed",
+          "id_recomendacion": "123456",
+          "base": {...} 
+        }
+        ```
+  - **SI ESTA INCOMPLETO :**
+      - Ejemplo:
+        ```json
+        { 
+          "status": "incompleted", 
+          "id_recomendacion": "123456",
+          "nivel" : "nivel1", 
+          "propiedad" : "generos",
+          "base": {...} 
+        }
+        ```
 - **Si ocurre un error:**
   - Retorna el error capturado.
 

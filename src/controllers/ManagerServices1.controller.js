@@ -1,4 +1,4 @@
-import { connectMongoDB, disconnectMongoDB } from "../config/mongoDB_connection.config.js"
+import { connectMongoDB} from "../config/mongoDB_connection.config.js"
 import dataValidationService from "../services/dataValidationService.js"
 import MongoDB_Manager from "../services/MongoDB/MongoDBManager.js"
 import NivelesManager from "../services/NivelesManager.js"
@@ -6,9 +6,9 @@ import reconocerStatusService from "../services/reconocerStatusService.js"
 //Inicio del Servicio
 export default async function ManagerServices1(id_recomendacion, base) {
     try {
-        //Validacion
-        if (!dataValidationService(id_recomendacion, base)) throw new TypeError("Error en la validación")
-
+        //Validación
+        if (!dataValidationService(id_recomendacion, base)[0]) throw new TypeError(`Error en la validación: ${dataValidationService(id_recomendacion, base)[1]}`)
+        
         //Iniciamos conección a Mongo
         connectMongoDB()
         //---Instanciamos a MongoManager()
@@ -52,7 +52,7 @@ export default async function ManagerServices1(id_recomendacion, base) {
         if (Objeto_niveles_bd[0] === false && Objeto_niveles_bd[2] === "") {
             //No Existe Objeto_niveles_bd
             ///Crear documento_niveles en Base de Datos
-            console.log(Objeto_niveles.Objeto)
+            //console.log(Objeto_niveles.Objeto)
             const crear_niveles = await Mongo.crear_documento_Niveles(Objeto_niveles.Objeto)
             if (crear_niveles[0] === false) throw new TypeError("Hubo un error en la creacion del ObjetoNiveles en la base de datos")
             console.log("ObjetoNiveles Creado")
@@ -83,19 +83,19 @@ export default async function ManagerServices1(id_recomendacion, base) {
         
         //  Status General = 'incompleted'
         for (const name_nivel in Objeto_niveles.niveles_incompleted) {
-            console.log(name_nivel)
+            //console.log(name_nivel)
             const evaluacion =reconocerStatusService(Objeto_niveles.Objeto,name_nivel)
             //error
             if(evaluacion[4]===true)throw new TypeError("Hubo un error con el valor de la propiedad.Posible inserción en BD")
             //Propiedad = 'incompleted'
             if(evaluacion[0]===false){
-                return {id_recomendacion,base,nivel:evaluacion[1],propiedad:evaluacion[2],status:evaluacion[3]}
+                return {status:evaluacion[3],id_recomendacion,nivel:evaluacion[1],propiedad:evaluacion[2],base}
             }
         }
         ///No hay necesida pero por sea caso
         return { status: 'completed', id_recomendacion, base }
 
     } catch (error) {
-        return error
+        throw error
     }
 }
